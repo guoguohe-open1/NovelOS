@@ -1,0 +1,22 @@
+name: novelos-local
+
+services:
+  db:
+    image: postgres:17.11-bookworm@sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826
+    environment:
+      POSTGRES_USER: ${NOVELOS_DB_USER:?Set NOVELOS_DB_USER}
+      POSTGRES_PASSWORD: ${NOVELOS_DB_PASSWORD:?Set NOVELOS_DB_PASSWORD}
+      POSTGRES_DB: ${NOVELOS_DB_NAME:?Set NOVELOS_DB_NAME}
+    ports:
+      - "127.0.0.1:${NOVELOS_DB_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+      start_period: 5s
+
+volumes:
+  postgres_data:
