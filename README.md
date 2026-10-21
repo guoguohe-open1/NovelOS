@@ -141,4 +141,4 @@ curl.exe --fail http://127.0.0.1:8000/health/ready
 
 预期依次为 503、200、恢复后 200。测试不调用模型；模型网关、worker、小说表与正式记忆都属于后续任务。任务状态见实施计划；下一业务任务为 [T01：项目生命周期与隔离](docs/implementation-plan.md#t01项目生命周期与隔离)。
 
-本地 Git 已初始化为 `main`；提交与首次远程同步按 [Git 工作流](docs/git-workflow.md) 执行。提交身份与托管平台认证分开配置，远程仓库尚未创建时不要执行推送。
+本地 Git 已初始化为 `main`，`origin` 已配置为 [guoguohe-open1/NovelOS](https://github.com/guoguohe-open1/NovelOS)。提交与首次远程同步按 [Git 工作流](docs/git-workflow.md) 执行；提交署名、连接器权限与本机 Git 认证分开判断，实际推送由用户执行。

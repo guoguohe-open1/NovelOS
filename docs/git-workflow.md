@@ -54,14 +54,14 @@ git ls-files -- .env
 
 ## 3. 首次创建远程并推送
 
-当前本地仓库已初始化；目标远程仓库尚未创建，未配置 `origin`，因此还不能验证目标写权限或执行首次推送。此时无法仅凭作者邮箱判断“能推到哪个账号”。
+目标远程仓库已由用户创建：[guoguohe-open1/NovelOS](https://github.com/guoguohe-open1/NovelOS)，本地 `origin` 已配置为 `https://github.com/guoguohe-open1/NovelOS.git`。2026-10-21 首次检查时，通过 GitHub 连接器确认该仓库为公开仓库、默认分支名为 `main`、尚无远程分支，连接账号 `guoguohe-open1` 具有管理员和推送权限；这不替代本机 Git 的 HTTPS 认证检查。本轮只检查和配置本地远程，不执行实际推送。
 
-用户在预期账号下创建空仓库（例如 NovelOS），选择可见性；已有完整本地工程时不要在远程额外初始化 README、`.gitignore` 或 License。复制新仓库的 HTTPS 地址，核对所有者后执行（示例占位符需替换）：
+新项目首次创建远程时，应在预期账号下创建空仓库并选择可见性；已有完整本地工程时不要在远程额外初始化 README、`.gitignore` 或 License。尚未绑定远程时可用 `git remote add origin 'https://github.com/<owner>/NovelOS.git'`。本仓库已绑定，不重复添加，执行：
 
 ```powershell
-git remote add origin 'https://github.com/<owner>/NovelOS.git'
 git remote -v
 git log -1 --oneline
+git ls-remote origin
 git push --dry-run origin main
 git push -u origin main
 ```
@@ -70,7 +70,9 @@ git push -u origin main
 
 本机已安装 Git Credential Manager 并配置 `manager` 助手。首次 HTTPS 推送可能弹出浏览器登录，请在本机选择目标账号完成认证；不要把密码或令牌发给助手，不把令牌写进远程 URL、文档或提交。GitHub Git 操作不使用普通账户密码，详见 [GitHub HTTPS 与凭据缓存](https://docs.github.com/en/get-started/git-basics/caching-your-github-credentials-in-git)。
 
-本次未安装 `gh`，不要求额外安装。SSH 到 GitHub 的 22 端口连接测试超时，未能证实 SSH 登录账号；后续可先使用 HTTPS，网络与目标仓库写权限仍需实际验证。连接器访问仓库的权限与命令行认证分开判断。
+本轮命令行检查有网络超时，公开 API 也曾因匿名请求限流返回 403；连接器重试和网页访问随后成功。非交互 `git push --dry-run origin main` 重试到达认证阶段后返回 `Cannot prompt because user interactivity has been disabled`。检查时主动关闭了交互登录，因此该结果说明本机非交互模式尚不能完成认证，不代表仓库没有写权限。用户应在正常终端执行上面的 dry-run，完成本机登录后再实际推送。
+
+本次未安装 `gh`，不要求额外安装。此前 SSH 到 GitHub 的 22 端口连接测试超时，未能证实 SSH 登录账号；当前使用 HTTPS。连接器已确认目标账号权限，本机 HTTPS 认证和最终推送仍需用户完成，两者分开判断。
 
 若远程已经有历史，先获取并检查分叉关系，保留双方内容；不要为了完成初始化使用强推覆盖。
 
